@@ -8,14 +8,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 # Handling a timeout situation
 from selenium.common.exceptions import TimeoutException
-
+# Downloader
 import urllib
 
+import sys
 
 option = webdriver.ChromeOptions()
 option.add_argument("--incognito")
 option.add_argument('headless')
 
+# replace chromedriver.exe with your desired driver. Also make sure the path is correct
 browser = webdriver.Chrome(executable_path='./chromedriver.exe', chrome_options=option)
 
 browser.get("https://webcast.ucsc.edu/index.php")
@@ -47,8 +49,8 @@ browser.get(links[course_idx])
 username = browser.find_element_by_name("j_username")
 password = browser.find_element_by_name("j_password")
 
-username.send_keys("cmps-109-1")
-password.send_keys("a*&jg90(3$")
+username.send_keys(sys.argv[0])
+password.send_keys(sys.argv[1])
 
 browser.find_element_by_class_name("submit").click()
 
@@ -59,7 +61,7 @@ for i in range(len(find_lecture_links)):
 lecture_links = set(lecture_links)
 
 def get_lecture():
-    print("WHO DAT: "+str(len(lecture_links)))
+    print("lecture #: "+str(len(lecture_links)))
     browser.get(lecture_links.pop())
     try:
         WebDriverWait(browser, 20).until(
@@ -75,7 +77,6 @@ def get_lecture():
         urllib.urlretrieve(video_url, 'video'+str(len(lecture_links))+'.mp4')
         get_lecture()
          # Uncomment to write scrapped video section to video.html
-        # import sys
         # reload(sys)
         # sys.setdefaultencoding('utf-8')
         # f= open("video.html","w+")
