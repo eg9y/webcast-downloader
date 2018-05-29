@@ -44,24 +44,29 @@ while i < len(find_course_titles):
 for i in range(len(find_links)):
     links.append(find_links[i].get_attribute("href"))
 
-course_idx = course.index(sys.argv[0])
+course_idx = course.index(sys.argv[1])
 browser.get(links[course_idx])
 username = browser.find_element_by_name("j_username")
 password = browser.find_element_by_name("j_password")
 
-username.send_keys(sys.argv[1])
-password.send_keys(sys.argv[2])
+username.send_keys(sys.argv[2])
+password.send_keys(sys.argv[3])
 
 browser.find_element_by_class_name("submit").click()
 
 find_lecture_links = browser.find_elements_by_class_name('itemtitle')
 lecture_links = []
 for i in range(len(find_lecture_links)):
-    lecture_links.append(find_lecture_links[i].get_attribute("href"))  
-lecture_links = set(lecture_links)
+    lecture_links.append(find_lecture_links[i].get_attribute("href")) 
 
-def get_lecture():
+# for i in range(len(lecture_links)):
+#     print(lecture_links[i])
+#     if(i!=0):
+#         print(lecture_links[i] == lecture_links[i-1])     
+
+def get_lecture(num):
     print("lecture #: "+str(len(lecture_links)))
+    lecture_links.pop()
     browser.get(lecture_links.pop())
     try:
         WebDriverWait(browser, 20).until(
@@ -74,12 +79,15 @@ def get_lecture():
         # for i in range(len(videos)):
         print(videos[0].get_attribute("src"))
         video_url = videos[0].get_attribute("src")
-        urllib.urlretrieve(video_url, 'video'+str(len(lecture_links))+'.mp4')
-        get_lecture()
-         # Uncomment to write scrapped video section to video.html
+        urllib.urlretrieve(video_url, 'video'+str(num)+'.mp4')
+        if(len(lecture_links)):
+            get_lecture(num+1)
+        else:
+            browser.quit()
+        #  Uncomment to write scrapped video section to video.html
         # reload(sys)
         # sys.setdefaultencoding('utf-8')
         # f= open("video.html","w+")
         # f.write(browser.page_source)
         # f.close()
-get_lecture()
+get_lecture(1)

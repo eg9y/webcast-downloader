@@ -17,7 +17,7 @@ As title suggests, this is a python script to download all webcast videos of a l
 
 4. Locate the driver at line 21 of index.py, in the executable path option
 
-5. That's about it! To run the script, do `python index.py classname username password`. Where *classname*, *username*, and *password* are the class name, webcast username and password, respectively. **Note: class name should be in the format of 'DEPARTMENT CODE', quotes included. For example 'PHYS 6B'**
+5. That's about it! To run the script, do `python index.py classname username password`. Where *classname*, *username*, and *password* are the class name, webcast username and password, respectively. **Note: class name should be in the format of "DEPARTMENT CODE", double quotes included. And password should also be surrounded by double quotes. Example: `python index.py "PHYS 6B" a-random-username "theactualpassword"`**
 
   
 
