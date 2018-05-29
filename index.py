@@ -44,13 +44,13 @@ while i < len(find_course_titles):
 for i in range(len(find_links)):
     links.append(find_links[i].get_attribute("href"))
 
-course_idx = course.index('CMPS 109')
+course_idx = course.index(sys.argv[0])
 browser.get(links[course_idx])
 username = browser.find_element_by_name("j_username")
 password = browser.find_element_by_name("j_password")
 
-username.send_keys(sys.argv[0])
-password.send_keys(sys.argv[1])
+username.send_keys(sys.argv[1])
+password.send_keys(sys.argv[2])
 
 browser.find_element_by_class_name("submit").click()
 
