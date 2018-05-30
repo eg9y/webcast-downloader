@@ -10,7 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 # Downloader
 import urllib
-
+# To get argv
 import sys
 
 option = webdriver.ChromeOptions()
@@ -57,12 +57,17 @@ browser.find_element_by_class_name("submit").click()
 find_lecture_links = browser.find_elements_by_class_name('itemtitle')
 lecture_links = []
 for i in range(len(find_lecture_links)):
-    lecture_links.append(find_lecture_links[i].get_attribute("href")) 
+    lecture_links.append(find_lecture_links[i].get_attribute("href"))
 
-# for i in range(len(lecture_links)):
-#     print(lecture_links[i])
-#     if(i!=0):
-#         print(lecture_links[i] == lecture_links[i-1])     
+def get_a_lecture(side, num, videos):
+    if side == "L" or side == "LR":
+        print(videos[0].get_attribute("src"))
+        video_url = videos[0].get_attribute("src")
+        urllib.urlretrieve(video_url, str(num)+'_L.mp4')
+    if side == "R" or side == "LR":
+        print(videos[1].get_attribute("src"))
+        video_url = videos[0].get_attribute("src")
+        urllib.urlretrieve(video_url, str(num)+'_R.mp4')
 
 def get_lecture(num):
     print("lecture #: "+str(len(lecture_links)))
@@ -76,10 +81,7 @@ def get_lecture(num):
         browser.quit()
     finally:
         videos = browser.find_elements_by_tag_name("video")
-        # for i in range(len(videos)):
-        print(videos[0].get_attribute("src"))
-        video_url = videos[0].get_attribute("src")
-        urllib.urlretrieve(video_url, 'video'+str(num)+'.mp4')
+        get_a_lecture(sys.argv[4], num, videos)           
         if(len(lecture_links)):
             get_lecture(num+1)
         else:
@@ -90,4 +92,5 @@ def get_lecture(num):
         # f= open("video.html","w+")
         # f.write(browser.page_source)
         # f.close()
+
 get_lecture(1)
